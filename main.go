@@ -34,14 +34,14 @@ func fromFile(name string) []byte {
 	return b
 }
 
-func toFile(name string, g *gif.GIF) {
+func toFile(name string, g gif.GIF) {
   f, err := os.Create(name)
   if err != nil {
     panic(err)
   }
 
   defer f.Close()
-  err = gif.EncodeAll(f, g)
+  err = gif.EncodeAll(f, &g)
 
   if err != nil {
     panic(err)
@@ -52,7 +52,7 @@ func main() {
 	fmt.Println("Running!")
   b := fromFile("test/in.gif")
   i := GifToImages(b)
-  out := glitches.Reverse(i)
+  out := glitches.Scanlines(glitches.Jitter(i))
   toFile("test/out.gif", out)
   fmt.Println("done!")
 }
