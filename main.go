@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"image/gif"
   "io/ioutil"
+  "gliftch/glitches"
   "os"
 )
 
@@ -33,24 +34,6 @@ func fromFile(name string) []byte {
 	return b
 }
 
-// Get a GIF from a URL
-func fromURL(url string) []byte {
-	var b []byte
-	return b
-}
-
-func reverse(g gif.GIF) *gif.GIF {
-  var out gif.GIF
-  for i := len(g.Image); i > 0; i--  {
-    out.Image = append(out.Image, g.Image[i-1])
-    out.Delay = append(out.Delay, g.Delay[i-1])
-  }
-
-  frameReport(&out)
-
-  return &out
-}
-
 func toFile(name string, g *gif.GIF) {
   f, err := os.Create(name)
   if err != nil {
@@ -63,14 +46,13 @@ func toFile(name string, g *gif.GIF) {
   if err != nil {
     panic(err)
   }
-
 }
-
 
 func main() {
 	fmt.Println("Running!")
   b := fromFile("test/in.gif")
   i := GifToImages(b)
-  out := reverse(i)
+  out := glitches.Reverse(i)
   toFile("test/out.gif", out)
+  fmt.Println("done!")
 }
