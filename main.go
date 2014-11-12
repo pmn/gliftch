@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"image/gif"
+  "io/ioutil"
 )
 
 func GifToImages(in []byte) *gif.GIF {
@@ -22,11 +23,16 @@ func frameReport(g *gif.GIF) {
 	}
 }
 
+// Get a GIF from a file
 func fromFile(name string) []byte {
-	var b []byte
+	b,err := ioutil.ReadFile(name)
+  if err != nil {
+    panic(err)
+  }
 	return b
 }
 
+// Get a GIF from a URL
 func fromURL(url string) []byte {
 	var b []byte
 	return b
@@ -34,4 +40,7 @@ func fromURL(url string) []byte {
 
 func main() {
 	fmt.Println("Running!")
+  b := fromFile("test/in.gif")
+  i := GifToImages(b)
+  frameReport(i)
 }
